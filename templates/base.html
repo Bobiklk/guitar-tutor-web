@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гитарный мастер - Обучение игре на гитаре</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-guitar"></i>
+                <h1>Гитарный мастер</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('index') }}" {% if request.path == '/' %}class="active"{% endif %}><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="{{ url_for('lessons_page') }}" {% if request.path.startswith('/lessons') %}class="active"{% endif %}><i class="fas fa-book"></i> Уроки</a></li>
+                    <li><a href="{{ url_for('chords_page') }}" {% if request.path.startswith('/chords') %}class="active"{% endif %}><i class="fas fa-music"></i> Аккорды</a></li>
+                    <li><a href="{{ url_for('songs_page') }}" {% if request.path.startswith('/songs') %}class="active"{% endif %}><i class="fas fa-file-audio"></i> Песни</a></li>
+                    <li><a href="{{ url_for('practice') }}" {% if request.path == '/practice' %}class="active"{% endif %}><i class="fas fa-dumbbell"></i> Тренировка</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>О проекте</h3>
+                    <p>Гитарный мастер - это бесплатная платформа для обучения игре на гитаре. Уроки, аккорды, песни и инструменты для практики.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Навигация</h3>
+                    <ul>
+                        <li><a href="{{ url_for('index') }}">Главная</a></li>
+                        <li><a href="{{ url_for('lessons_page') }}">Уроки</a></li>
+                        <li><a href="{{ url_for('chords_page') }}">Аккорды</a></li>
+                        <li><a href="{{ url_for('songs_page') }}">Песни</a></li>
+                        <li><a href="{{ url_for('practice') }}">Тренировка</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <p>По вопросам сотрудничества: contact@guitar-master.ru</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Гитарный мастер. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>

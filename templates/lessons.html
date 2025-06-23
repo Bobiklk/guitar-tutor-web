@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="lessons-page">
+    <h2>Программа обучения</h2>
+    
+    <div class="progress-container">
+        <div class="progress-header">
+            <h3>Ваш прогресс</h3>
+            <span>{{ progress_percent }}% завершено</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress" style="width: {{ progress_percent }}%"></div>
+        </div>
+    </div>
+    
+    <div class="lessons-tabs">
+        <button class="tab-btn active" data-tab="all">Все уроки</button>
+        <button class="tab-btn" data-tab="theory">Теория</button>
+        <button class="tab-btn" data-tab="practice">Практика</button>
+    </div>
+    
+    <div class="lessons-list">
+        {% for lesson in lessons %}
+        <div class="lesson-card {% if lesson['id'] in completed_lessons %}completed{% endif %}" data-type="{{ lesson['lesson_type'] }}">
+            <div class="lesson-header">
+                <div class="lesson-number">Урок {{ lesson['order_index'] }}</div>
+                <div class="lesson-type {{ lesson['lesson_type'] }}">
+                    {{ 'Теория' if lesson['lesson_type'] == 'theory' else 'Практика' }}
+                </div>
+            </div>
+            <h3><a href="{{ url_for('lesson_detail', lesson_id=lesson['id']) }}">{{ lesson['title'] }}</a></h3>
+            <div class="lesson-footer">
+                {% if lesson['id'] in completed_lessons %}
+                <span class="completed-badge"><i class="fas fa-check-circle"></i> Завершено</span>
+                {% else %}
+                <span class="duration"><i class="fas fa-clock"></i> 15-20 мин</span>
+                {% endif %}
+                <span class="difficulty">
+                    {% if lesson['order_index'] < 5 %}★ Легко
+                    {% elif lesson['order_index'] < 10 %}★★ Средне
+                    {% else %}★★★ Сложно
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<div class="motivation-quote">
+    <p>"Музыка - это язык души. Научившись играть на гитаре, вы обретаете голос для выражения своих чувств."</p>
+</div>
+{% endblock %}

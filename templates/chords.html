@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="chords-page">
+    <h2>Библиотека аккордов</h2>
+    
+    <div class="controls">
+        <div class="search-box">
+            <input type="text" id="chord-search" placeholder="Поиск аккордов...">
+            <i class="fas fa-search"></i>
+        </div>
+        
+        <div class="filters">
+            <div class="filter-group">
+                <label for="difficulty-filter">Сложность:</label>
+                <select id="difficulty-filter">
+                    <option value="all">Все</option>
+                    <option value="1">★ Начальный</option>
+                    <option value="2">★★ Средний</option>
+                    <option value="3">★★★ Продвинутый</option>
+                    <option value="4">★★★★ Эксперт</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="type-filter">Тип:</label>
+                <select id="type-filter">
+                    <option value="all">Все</option>
+                    <option value="major">Мажорные</option>
+                    <option value="minor">Минорные</option>
+                    <option value="7">Септаккорды</option>
+                    <option value="sus">Sus-аккорды</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="chords-grid">
+        {% for chord in chords %}
+        <div class="chord-card" data-name="{{ chord['name'] }}" data-difficulty="{{ chord['difficulty'] }}">
+            <h3>{{ chord['name'] }}</h3>
+            <div class="chord-image">
+                <img src="{{ url_for('chord_image', name=chord['name']) }}" alt="{{ chord['name'] }}">
+            </div>
+            <div class="chord-meta">
+                <span class="difficulty">
+                    {% for i in range(chord['difficulty']) %}★{% endfor %}
+                    {% for i in range(4 - chord['difficulty']) %}☆{% endfor %}
+                </span>
+                <button class="btn-icon favorite-btn" data-chord="{{ chord['name'] }}">
+                    <i class="far fa-heart"></i>
+                </button>
+            </div>
+        </div>
+        {% else %}
+        <div class="no-results">
+            <p>Аккорды не найдены</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    {% if total_pages > 1 %}
+    <div class="pagination">
+        {% if current_page > 1 %}
+        <a href="{{ url_for('chords_page', page=current_page-1) }}" class="btn">
+            <i class="fas fa-arrow-left"></i> Назад
+        </a>
+        {% else %}
+        <span class="btn disabled"><i class="fas fa-arrow-left"></i> Назад</span>
+        {% endif %}
+        
+        <span>Страница {{ current_page }} из {{ total_pages }}</span>
+        
+        {% if current_page < total_pages %}
+        <a href="{{ url_for('chords_page', page=current_page+1) }}" class="btn">
+            Далее <i class="fas fa-arrow-right"></i>
+        </a>
+        {% else %}
+        <span class="btn disabled">Далее <i class="fas fa-arrow-right"></i></span>
+        {% endif %}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

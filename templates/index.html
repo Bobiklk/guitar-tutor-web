@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h2>Научись играть на гитаре с нуля!</h2>
+        <p>Интерактивные уроки, аккорды, бои и песни для любого уровня</p>
+        <div class="hero-buttons">
+            <a href="{{ url_for('lessons_page') }}" class="btn btn-primary">Начать обучение</a>
+            <a href="{{ url_for('chords_page') }}" class="btn btn-secondary">Изучить аккорды</a>
+        </div>
+    </div>
+    <div class="hero-image">
+        <svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100%" height="100%" fill="#f0f7ff" rx="15"/>
+            <path d="M100,200 L150,100 L300,120 L320,200 Z" fill="#8B4513"/>
+            <line x1="100" y1="200" x2="320" y2="200" stroke="#333" stroke-width="4"/>
+            <line x1="120" y1="190" x2="120" y2="80" stroke="#ddd" stroke-width="2"/>
+            <line x1="150" y1="185" x2="150" y2="70" stroke="#ddd" stroke-width="2"/>
+            <line x1="180" y1="180" x2="180" y2="60" stroke="#ddd" stroke-width="2"/>
+            <circle cx="100" cy="200" r="10" fill="#333"/>
+        </svg>
+    </div>
+</section>
+
+<section class="features">
+    <h2 class="section-title">Почему выбирают нас</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h3>Пошаговые уроки</h3>
+            <p>15 уроков от основ до продвинутых техник с системой отслеживания прогресса</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-music"></i>
+            </div>
+            <h3>100+ аккордов</h3>
+            <p>Интерактивные схемы всех популярных аккордов с генерацией в реальном времени</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-file-audio"></i>
+            </div>
+            <h3>50+ песен</h3>
+            <p>Подборки песен с аккордами, боями и текстами для разных уровней сложности</p>
+        </div>
+    </div>
+</section>
+
+<section class="popular-chords">
+    <h2 class="section-title">Популярные аккорды</h2>
+    <div class="chords-grid">
+        {% for chord in ['C', 'G', 'D', 'Am', 'Em', 'F'] %}
+        <div class="chord-card">
+            <h3>{{ chord }}</h3>
+            <div class="chord-image">
+                <img src="{{ url_for('chord_image', name=chord) }}" alt="{{ chord }}">
+            </div>
+            <a href="{{ url_for('chords_page') }}" class="btn btn-small">Подробнее</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="testimonial">
+    <h2 class="section-title">Отзывы учеников</h2>
+    <div class="testimonial-card">
+        <div class="testimonial-content">
+            <p>"Я начал с нуля и через месяц уже играл свои первые песни! Уроки очень понятные, а система прогресса мотивирует двигаться дальше."</p>
+            <div class="testimonial-author">
+                <strong>Алексей, Москва</strong>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

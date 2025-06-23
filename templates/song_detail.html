@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="song-detail">
+    <h2>{{ song['title'] }}</h2>
+    <h3>{{ song['artist'] }}</h3>
+    
+    <div class="song-info">
+        <div class="chords-box">
+            <h4>Аккорды:</h4>
+            <div class="chords-list">
+                {% for chord in song['chords'].split(',') %}
+                <div class="chord-mini">
+                    <img src="{{ url_for('chord_image', name=chord) }}" alt="{{ chord }}">
+                    <span>{{ chord }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="strumming-box">
+            <h4>Бой:</h4>
+            <img src="{{ url_for('strumming_pattern') }}?pattern={{ song['strumming_pattern'] }}" alt="Бой">
+        </div>
+    </div>
+    
+    <div class="lyrics-box">
+        <h4>Текст песни:</h4>
+        <div class="song-lyrics">
+            {{ formatted_lyrics|safe }}
+        </div>
+    </div>
+    
+    <div class="song-actions">
+        <button class="btn btn-primary" id="listen-btn">
+            <i class="fas fa-play"></i> Слушать
+        </button>
+        <button class="btn btn-secondary" id="download-btn">
+            <i class="fas fa-download"></i> Скачать табы
+        </button>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Кнопка "Слушать"
+    const listenBtn = document.getElementById('listen-btn');
+    if (listenBtn) {
+        listenBtn.addEventListener('click', function() {
+            const searchQuery = encodeURIComponent("{{ song['title'] }} {{ song['artist'] }}");
+            window.open(`https://www.youtube.com/results?search_query=${searchQuery}`, '_blank');
+        });
+    }
+    
+    // Кнопка "Скачать табы"
+    const downloadBtn = document.getElementById('download-btn');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', function() {
+            alert('Функция скачивания табов в разработке');
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="practice-page">
+    <h2>Тренировочная зона</h2>
+    
+    <div class="practice-tools">
+        <div class="tool-card">
+            <div class="tool-icon">
+                <i class="fas fa-stopwatch"></i>
+            </div>
+            <h3>Таймер практики</h3>
+            <div class="timer-display">20:00</div>
+            <div class="timer-controls">
+                <button class="btn" id="start-timer"><i class="fas fa-play"></i> Старт</button>
+                <button class="btn" id="pause-timer"><i class="fas fa-pause"></i> Пауза</button>
+                <button class="btn" id="reset-timer"><i class="fas fa-redo"></i> Сброс</button>
+            </div>
+        </div>
+        
+        <div class="tool-card">
+            <div class="tool-icon">
+                <i class="fas fa-sliders-h"></i>
+            </div>
+            <h3>Метроном</h3>
+            <div class="metronome-controls">
+                <div class="bpm-control">
+                    <label>Ударов в минуту (BPM):</label>
+                    <input type="number" id="bpm" value="60" min="40" max="240">
+                </div>
+                <div class="time-signature">
+                    <label>Музыкальный размер:</label>
+                    <select id="time-signature">
+                        <option value="4">4/4</option>
+                        <option value="3">3/4</option>
+                        <option value="6">6/8</option>
+                    </select>
+                </div>
+                <button class="btn" id="start-metronome"><i class="fas fa-play"></i> Старт</button>
+            </div>
+            <div class="metronome-visual">
+                <div class="beat active"></div>
+                <div class="beat"></div>
+                <div class="beat"></div>
+                <div class="beat"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="practice-exercises">
+        <h3>Рекомендуемые упражнения</h3>
+        
+        <div class="exercises-grid">
+            <div class="exercise-card">
+                <h4>Смена аккордов</h4>
+                <p>Am - C - G - D</p>
+                <div class="chords-mini">
+                    <img src="{{ url_for('chord_image', name='Am') }}" alt="Am">
+                    <img src="{{ url_for('chord_image', name='C') }}" alt="C">
+                    <img src="{{ url_for('chord_image', name='G') }}" alt="G">
+                    <img src="{{ url_for('chord_image', name='D') }}" alt="D">
+                </div>
+                <button class="btn">Начать</button>
+            </div>
+            
+            <div class="exercise-card">
+                <h4>Перебор "Четверка"</h4>
+                <p>Бас - 3 - 2 - 3 - 1 - 3 - 2 - 3</p>
+                <div class="strumming-mini">
+                    <img src="{{ url_for('strumming_pattern', pattern='4 3 2 3 1 3 2 3') }}" alt="Перебор">
+                </div>
+                <button class="btn">Начать</button>
+            </div>
+            
+            <div class="exercise-card">
+                <h4>Гамма Ля минор</h4>
+                <p>Пентатоника в 5-й позиции</p>
+                <div class="scale-diagram">
+                    <pre>
+e|----------------5-8--
+B|------------5-8------
+G|--------5-7----------
+D|----5-7--------------
+A|--5-7----------------
+E|----------------------
+                    </pre>
+                </div>
+                <button class="btn">Начать</button>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

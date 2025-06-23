@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="songs-page">
+    <h2>Библиотека песен</h2>
+    
+    <div class="controls">
+        <div class="search-box">
+            <input type="text" id="song-search" placeholder="Поиск песен...">
+            <i class="fas fa-search"></i>
+        </div>
+        
+        <div class="filters">
+            <div class="filter-group">
+                <label for="difficulty-filter">Сложность:</label>
+                <select id="difficulty-filter">
+                    <option value="all">Все</option>
+                    <option value="1">★ Начальный</option>
+                    <option value="2">★★ Средний</option>
+                    <option value="3">★★★ Продвинутый</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="genre-filter">Жанр:</label>
+                <select id="genre-filter">
+                    <option value="all">Все</option>
+                    <option value="rock">Рок</option>
+                    <option value="pop">Поп</option>
+                    <option value="folk">Фолк</option>
+                    <option value="classic">Классика</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="songs-list">
+        {% for song in songs %}
+        <div class="song-card" data-title="{{ song['title']|lower }}" data-artist="{{ song['artist']|lower }}" data-difficulty="{{ song['difficulty'] }}">
+            <div class="song-info">
+                <h3><a href="{{ url_for('song_detail', song_id=song['id']) }}">{{ song['title'] }}</a></h3>
+                <p>{{ song['artist'] }}</p>
+            </div>
+            <div class="song-meta">
+                <span class="difficulty">
+                    {% for i in range(song['difficulty']) %}★{% endfor %}
+                    {% for i in range(3 - song['difficulty']) %}☆{% endfor %}
+                </span>
+                <span class="chords-count">
+                    {{ song['chords']|count_chords }} аккордов
+                </span>
+            </div>
+        </div>
+        {% else %}
+        <div class="no-results">
+            <p>Песни не найдены</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    {% if total_pages > 1 %}
+    <div class="pagination">
+        {% if current_page > 1 %}
+        <a href="{{ url_for('songs_page', page=current_page-1) }}" class="btn">
+            <i class="fas fa-arrow-left"></i> Назад
+        </a>
+        {% else %}
+        <span class="btn disabled"><i class="fas fa-arrow-left"></i> Назад</span>
+        {% endif %}
+        
+        <span>Страница {{ current_page }} из {{ total_pages }}</span>
+        
+        {% if current_page < total_pages %}
+        <a href="{{ url_for('songs_page', page=current_page+1) }}" class="btn">
+            Далее <i class="fas fa-arrow-right"></i>
+        </a>
+        {% else %}
+        <span class="btn disabled">Далее <i class="fas fa-arrow-right"></i></span>
+        {% endif %}
+    </div>
+    {% endif %}
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Фильтрация песен
+    const songSearch = document.getElementById('song-search');
+    const difficultyFilter = document.getElementById('difficulty-filter');
+    const genreFilter = document.getElementById('genre-filter');
+    const songCards = document.querySelectorAll('.song-card');
+    
+    function filterSongs() {
+        const searchTerm = songSearch.value.toLowerCase();
+        const difficultyValue = difficultyFilter.value;
+        const genreValue = genreFilter.value;
+        
+        songCards.forEach(card => {
+            const title = card.dataset.title;
+            const artist = card.dataset.artist;
+            const difficulty = card.dataset.difficulty;
+            
+            const matchesSearch = title.includes(searchTerm) || artist.includes(searchTerm);
+            const matchesDifficulty = difficultyValue === 'all' || difficulty === difficultyValue;
+            // Для простоты, жанр не используется в текущей реализации
+            const matchesGenre = true; 
+            
+            if (matchesSearch && matchesDifficulty && matchesGenre) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+    
+    songSearch.addEventListener('input', filterSongs);
+    difficultyFilter.addEventListener('change', filterSongs);
+    genreFilter.addEventListener('change', filterSongs);
+});
+</script>
+{% endblock %}
